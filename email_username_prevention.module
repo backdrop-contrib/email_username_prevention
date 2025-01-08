@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ * Prevents email addresses from being used as usernames.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function email_username_prevention_form_user_profile_form_alter(&$form, &$form_state) {
+  $form['account']['name']['#element_validate'][] = 'email_username_prevention_validate';
+}
+
+/**
+ * Validation handler for username.
+ *
+ * @see email_username_prevention_form_user_profile_form_alter().
+ * @see element_validate().
+ */
+function email_username_prevention_validate(&$element, &$form_state) {
+  $title = empty($element['#title']) ? $element['#parents'][0] : $element['#title'];
+  $value = isset($element['#value']) ? $element['#value'] : $element['#default_value'];
+  if (valid_email_address($value)) {
+    $error = t('The !element-title cannot be an email address.', array('!element-title' => $title));
+    form_error($element, $error);
+  }
+}

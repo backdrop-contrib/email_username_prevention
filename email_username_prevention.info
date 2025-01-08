@@ -1,0 +1,4 @@
+type = module
+name = Email Username Prevention
+description = Prevents email addresses from being used as usernames.
+backdrop = 1.x
